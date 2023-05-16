@@ -11,6 +11,9 @@ import (
 func innerJoin(db *gorm.DB) {
 	result := []repository.ItemToCategory{}
 
+	// Join 3 tables
+	// ItemToCategory > Item
+	// ItemToCategory > Category
 	db.Joins("Item").Joins("Category").Where("item_id=@itemId", sql.Named("itemId", 2)).Find(&result)
 
 	fmt.Println(result)
@@ -23,5 +26,15 @@ func innerJoin(db *gorm.DB) {
 func joinWithConditionEx(db *gorm.DB) {
 	result := []repository.ItemToCategory{}
 
+	// Join 3 tables
+	// ItemToCategory > Item
+	// ItemToCategory > Category
 	db.Joins("Item", db.Where(&repository.Item{Model: gorm.Model{ID: 2}})).Find(&result)
+}
+
+func join3Table(db *gorm.DB) {
+
+	user := repository.User{}
+
+	db.Joins("Company").Joins("Company.Product").Where("users.id = 3").Find(&user)
 }
